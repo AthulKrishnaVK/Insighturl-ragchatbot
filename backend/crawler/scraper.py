@@ -1,7 +1,9 @@
+
+
+
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-import os
 
 
 def fetch_page(url):
@@ -27,10 +29,53 @@ def fetch_page(url):
 
     return None
 
+
 def extract_text(html):
     soup = BeautifulSoup(html, "html.parser")
 
-    return soup.get_text(separator=" ", strip=True)
+    for tag in soup([
+        "script",
+        "style",
+        "nav",
+        "footer",
+        "header",
+        "aside",
+        "noscript"
+    ]):
+        tag.decompose()
+
+    content = []
+
+    for tag in soup.find_all(
+        ["h1", "h2", "h3", "p", "li", "table"]
+    ):
+
+        if tag.name == "table":
+
+            rows = []
+
+            for row in tag.find_all("tr"):
+
+                cells = [
+                    cell.get_text(" ", strip=True)
+                    for cell in row.find_all(["th", "td"])
+                ]
+
+                if cells:
+                    rows.append(" | ".join(cells))
+
+            if rows:
+                content.append(
+                    "TABLE:\n" + "\n".join(rows)
+                )
+
+        else:
+            text = tag.get_text(" ", strip=True)
+
+            if text:
+                content.append(text)
+
+    return "\n\n".join(content)
 
 
 def extract_links(html, base_url):
@@ -40,11 +85,15 @@ def extract_links(html, base_url):
 
     for tag in soup.find_all("a", href=True):
 
-        full_url = urljoin(base_url, tag["href"])
+        full_url = urljoin(
+            base_url,
+            tag["href"]
+        )
 
         links.add(full_url)
 
     return links
+
 
 if __name__ == "__main__":
 
@@ -52,6 +101,9 @@ if __name__ == "__main__":
 
     html = fetch_page(url)
 
-    links = extract_links(html, url)
+    if html:
+        text = extract_text(html)
+        links = extract_links(html, url)
 
-    print(links)
+        print(text[:1000])
+        print(links)

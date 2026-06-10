@@ -2,16 +2,10 @@ from dotenv import load_dotenv
 
 from langchain_community.vectorstores import Chroma
 
-# from langchain_google_genai import (
-#     GoogleGenerativeAIEmbeddings
-# )
 from langchain_community.embeddings import HuggingFaceEmbeddings
 load_dotenv()
 
-#create embeddings
-# embeddings = GoogleGenerativeAIEmbeddings(
-#     model="models/text-embedding-004"
-# )
+
 embeddings = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-MiniLM-L6-v2"
 )
