@@ -1,0 +1,36 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+backend/.env
+frontend/.env
+
+# React/Node
+node_modules/
+backend/node_modules/
+
+# Build
+dist/
+build/
+
+# Vector DB
+chroma_db/
+backend/chroma_db/
+backend/data/
+backend/backend/data/
+backend/api/data/
+# Crawled data
+backend/data/
+__pycache__/
+*.pyc
+# VS Code
+.vscode/
+
+# Logs
+*.log
+backend/chroma_db/
+backend/backend/chroma_db_*/

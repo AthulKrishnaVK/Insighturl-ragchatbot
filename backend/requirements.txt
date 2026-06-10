@@ -1,0 +1,13 @@
+beautifulsoup4
+requests
+langchain
+langchain-community
+langchain-openai
+chromadb
+ langchain-text-splitters
+python-dotenv
+fastapi
+uvicorn
+tiktoken
+fastapi
+jinja2
