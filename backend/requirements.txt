@@ -11,3 +11,6 @@ uvicorn
 tiktoken
 fastapi
 jinja2
+sentence-transformers
+supabase
+langchain-groq
