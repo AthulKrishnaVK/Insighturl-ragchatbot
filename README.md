@@ -98,7 +98,7 @@ Chat Response
 
 ### AI & RAG
 
-* Google Gemini
+* Groq
 * Hugging Face Embeddings
 * Sentence Transformers
 * LangChain Retrieval
