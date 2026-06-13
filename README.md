@@ -1,5 +1,6 @@
 # InsightURL – RAG Powered Website Chatbot
 
+## Url:https://insighturl-ragchatbot.vercel.app/
 ## Overview
 
 InsightURL is a Retrieval-Augmented Generation (RAG) based chatbot that can ingest any website URL, recursively crawl pages within the same domain, extract relevant content, and answer user questions based on the collected information.
