@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>InsightURL Assistant</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="popup">
+    <h1>InsightURL</h1>
+    <p class="subtitle">Ask questions from any webpage</p>
+
+    <label>Page URL</label>
+    <input id="urlInput" placeholder="Current page URL" />
+
+    <button id="ingestBtn">Ingest Page</button>
+
+    <label>Question</label>
+    <textarea id="questionInput" placeholder="Ask something about this page..."></textarea>
+
+    <button id="askBtn">Ask</button>
+
+    <div id="status"></div>
+
+    <div id="answerBox"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
