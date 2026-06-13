@@ -1,18 +1,17 @@
-
-
 import json
-import shutil
-import os
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
+
+from rag.supabase_vector import store_chunks
 
 
 def create_vector_db(kb_id):
 
-    file_path = f"backend/data/website_content_{kb_id}.json"
+    file_path = (
+        f"backend/data/"
+        f"website_content_{kb_id}.json"
+    )
 
     with open(
         file_path,
@@ -21,58 +20,49 @@ def create_vector_db(kb_id):
     ) as f:
         pages = json.load(f)
 
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200
-    )
-
     documents = []
 
     for page in pages:
 
-        text = page.get("text", "").strip()
+        text = (
+            page.get("content")
+            or page.get("text")
+            or ""
+        ).strip()
 
         if not text:
             continue
 
-        chunks = splitter.split_text(text)
-
-        for chunk in chunks:
-
-            documents.append(
-                Document(
-                    page_content=chunk,
-                    metadata={
-                        "source": page["url"]
-                    }
-                )
+        documents.append(
+            Document(
+                page_content=text,
+                metadata={
+                    "source": page.get("url", "")
+                }
             )
-
-    print("Pages:", len(pages))
-    print("Chunks:", len(documents))
+        )
 
     if len(documents) == 0:
         raise Exception(
-            "No valid documents found."
+            "No valid website content found."
         )
 
-    db_path = f"backend/chroma_db_{kb_id}"
-
-    if os.path.exists(db_path):
-        shutil.rmtree(db_path)
-
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=800,
+        chunk_overlap=100
     )
 
-    Chroma.from_documents(
-        documents=documents,
-        embedding=embeddings,
-        persist_directory=db_path
+    chunks = splitter.split_documents(
+        documents
     )
 
-    print(
-        f"Created DB {kb_id} with {len(documents)} chunks"
+    chunk_count = store_chunks(
+        kb_id,
+        chunks
     )
 
-    return len(pages), len(documents)
+    print("Pages Loaded:", len(pages))
+    print("Chunks Created:", chunk_count)
+    print("Stored in Supabase Vector DB")
+
+    return len(pages), chunk_count

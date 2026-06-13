@@ -1,6 +1,430 @@
 
 
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+
+// import { useAuth } from "./context/AuthContext";
+// import Login from "./pages/Login";
+// import Sidebar from "./components/Sidebar";
+// import ChatBox from "./components/ChatBox";
+
+// import {
+//   ingestWebsite,
+//   askQuestion,
+//   getKnowledgeBases,
+//   createChat,
+//   getChatSessions,
+//   getMessages
+// } from "./services/api";
+// import "./App.css"
+// function App() {
+//   const { user, login, logout } = useAuth();
+
+//   const [url, setUrl] = useState("");
+//   const [question, setQuestion] = useState("");
+
+//   const [knowledgeBases, setKnowledgeBases] =
+//     useState([]);
+
+//   const [chatSessions, setChatSessions] =
+//     useState([]);
+
+//   const [chatHistories, setChatHistories] =
+//     useState({});
+
+//   const [currentKbId, setCurrentKbId] =
+//     useState(null);
+
+//   const [currentChat, setCurrentChat] =
+//     useState(null);
+
+//   const [loading, setLoading] =
+//     useState(false);
+
+  
+
+//   useEffect(() => {
+//     if (!user) return;
+
+//     loadKnowledgeBases();
+//     loadChatSessions();
+
+//   }, [user]);
+// const loadKnowledgeBases = async () => {
+
+//   try {
+
+//     const data =
+//       await getKnowledgeBases(
+//         user.id
+//       );
+
+//     setKnowledgeBases(data);
+
+//   } catch (err) {
+
+//     console.error(
+//       "KB LOAD ERROR",
+//       err
+//     );
+//   }
+// };
+
+//   const loadChatSessions =
+//     async () => {
+
+//       try {
+
+//         const chats =
+//           await getChatSessions(
+//             user.id
+//           );
+//  console.log(
+//       "CHAT SESSIONS FROM API:",
+//       chats
+//     );
+//         setChatSessions(chats);
+
+//       } catch (err) {
+
+//         console.error("Load chat error",err);
+//       }
+//     };
+
+
+
+//   useEffect(() => {
+
+//     if (!currentChat) return;
+
+//     loadMessages();
+
+//   }, [currentChat]);
+
+//   const loadMessages =
+//     async () => {
+
+//       try {
+
+//         const messages =
+//           await getMessages(
+//             currentChat
+//           );
+
+//         setChatHistories(prev => ({
+
+//           ...prev,
+
+//           [currentChat]:
+//             messages.map(msg => ({
+//               role:
+//                 msg.role === "assistant"
+//                   ? "bot"
+//                   : "user",
+
+//               content:
+//                 msg.content
+//             }))
+//         }));
+
+//       } catch (err) {
+
+//         console.error(err);
+//       }
+//     };
+
+  
+
+//   const handleIngest =
+//     async () => {
+
+//       if (!url) return;
+
+//       try {
+
+//         setLoading(true);
+
+// const data =
+//   await ingestWebsite(
+//     url,
+//     user.id
+//   );
+
+// console.log(
+//   "INGEST RESPONSE",
+//   data
+// );
+
+// if (!data.kb_id) {
+
+//   console.error(
+//     "KB ID missing"
+//   );
+
+//   return;
+// }
+
+// const chat =
+//   await createChat(
+//     user.id,
+//     data.kb_id,
+//     data.url
+//   );
+
+// console.log(
+//   "CHAT CREATED",
+//   chat
+// );
+
+// setCurrentKbId(
+//   data.kb_id
+// );
+
+// setCurrentChat(
+//   chat.id
+// );
+//         console.log("CHAT RESPONSE:", chat);
+// console.log("CHAT ID:", chat.id);
+
+//         setUrl("");
+
+//         await loadKnowledgeBases();
+//         await loadChatSessions();
+
+//       } catch (err) {
+
+//         console.error(err);
+
+//       } finally {
+
+//         setLoading(false);
+//       }
+//     };
+
+
+
+//   const handleAsk =
+     
+//     async () => {
+// console.log({
+//     question,
+//     currentKbId,
+//     currentChat
+// });
+//       if (
+//         !question ||
+//         !currentKbId ||
+//         !currentChat
+//       )
+//         return;
+
+//       const userMessage = {
+
+//         role: "user",
+
+//         content: question
+//       };
+
+//       setChatHistories(prev => ({
+
+//         ...prev,
+
+//         [currentChat]: [
+
+//           ...(prev[currentChat] || []),
+
+//           userMessage
+//         ]
+//       }));
+
+//       const currentQuestion =
+//         question;
+
+//       setQuestion("");
+
+//       try {
+
+//         const response =
+//           await askQuestion(
+//             currentQuestion,
+//             currentKbId,
+//             currentChat
+//           );
+//           console.log(
+//              "ASK RESPONSE:",
+//               response
+//                );
+
+//         const botMessage = {
+
+//           role: "bot",
+
+//           content:
+//             response.answer
+//         };
+//         console.log("BOT MESSAGE:", botMessage);
+
+//         setChatHistories(prev => ({
+
+//           ...prev,
+
+//           [currentChat]: [
+
+//             ...(prev[currentChat] || []),
+
+//             botMessage
+//           ]
+//         }));
+
+//       } catch (err) {
+
+//         console.error(err);
+
+//         setChatHistories(prev => ({
+
+//           ...prev,
+
+//           [currentChat]: [
+
+//             ...(prev[currentChat] || []),
+
+//             {
+//               role: "bot",
+//               content:
+//                 "Something went wrong."
+//             }
+//           ]
+//         }));
+//       }
+//     };
+
+
+
+//   if (!user) {
+
+//     return (
+// <Login/>
+      
+//     );
+//   }
+
+//   const messages =
+//     currentChat
+//       ? chatHistories[currentChat] || []
+//       : [];
+// console.log("CURRENT CHAT:", currentChat);
+// console.log("CHAT HISTORIES:", chatHistories);
+// console.log("MESSAGES SENT TO CHATBOX:", messages);
+//   return (
+
+//     <div className="app">
+
+//       <Sidebar
+//         chatSessions={
+//           chatSessions
+//         }
+//         currentChat={
+//           currentChat
+//         }
+//         setCurrentChat={
+//           setCurrentChat
+//         }
+//       />
+
+//       <div className="main">
+
+//         <div className="header">
+
+//           <h1>
+//             InsightURL
+//           </h1>
+
+//           <div>
+
+//             <span
+//               style={{
+//                 marginRight: "15px"
+//               }}
+//             >
+//               {user.email}
+//             </span>
+
+//             <button
+//               onClick={logout}
+//             >
+//               Logout
+//             </button>
+
+//           </div>
+
+//         </div>
+
+//         <div className="ingest">
+
+//           <input
+//             value={url}
+//             onChange={(e) =>
+//               setUrl(
+//                 e.target.value
+//               )
+//             }
+//             placeholder="Enter Website URL"
+//           />
+
+//           <button
+//             onClick={
+//               handleIngest
+//             }
+//             disabled={loading}
+//           >
+//             {
+//               loading
+//                 ? "Ingesting..."
+//                 : "Ingest"
+//             }
+//           </button>
+
+//         </div>
+
+//         <ChatBox
+//           messages={messages}
+//         />
+
+//         <div className="chat-input">
+
+//           <input
+//             value={question}
+//             onChange={(e) =>
+//               setQuestion(
+//                 e.target.value
+//               )
+//             }
+//             placeholder="Ask a question..."
+//           />
+
+//           <button
+//             onClick={
+//               handleAsk
+//             }
+//           >
+//             Send
+//           </button>
+
+//         </div>
+
+//       </div>
+
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+
+import React, {
+  useEffect,
+  useState
+} from "react";
 
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
@@ -15,331 +439,222 @@ import {
   getChatSessions,
   getMessages
 } from "./services/api";
-import "./App.css"
+
+import "./App.css";
+
 function App() {
-  const { user, login, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const [url, setUrl] = useState("");
   const [question, setQuestion] = useState("");
 
-  const [knowledgeBases, setKnowledgeBases] =
-    useState([]);
+  const [knowledgeBases, setKnowledgeBases] = useState([]);
+  const [chatSessions, setChatSessions] = useState([]);
+  const [chatHistories, setChatHistories] = useState({});
 
-  const [chatSessions, setChatSessions] =
-    useState([]);
+  const [currentKbId, setCurrentKbId] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
 
-  const [chatHistories, setChatHistories] =
-    useState({});
-
-  const [currentKbId, setCurrentKbId] =
-    useState(null);
-
-  const [currentChat, setCurrentChat] =
-    useState(null);
-
-  const [loading, setLoading] =
-    useState(false);
-
-  
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
 
     loadKnowledgeBases();
     loadChatSessions();
-
   }, [user]);
-const loadKnowledgeBases = async () => {
 
-  try {
+  const loadKnowledgeBases = async () => {
+    try {
+      const data = await getKnowledgeBases(user.id);
+      setKnowledgeBases(data);
+    } catch (err) {
+      console.error("KB LOAD ERROR", err);
+    }
+  };
 
-    const data =
-      await getKnowledgeBases(
-        user.id
+  const loadChatSessions = async () => {
+    try {
+      const chats = await getChatSessions(user.id);
+
+      console.log(
+        "CHAT SESSIONS FROM API:",
+        chats
       );
 
-    setKnowledgeBases(data);
-
-  } catch (err) {
-
-    console.error(
-      "KB LOAD ERROR",
-      err
-    );
-  }
-};
-
-  const loadChatSessions =
-    async () => {
-
-      try {
-
-        const chats =
-          await getChatSessions(
-            user.id
-          );
- console.log(
-      "CHAT SESSIONS FROM API:",
-      chats
-    );
-        setChatSessions(chats);
-
-      } catch (err) {
-
-        console.error("Load chat error",err);
-      }
-    };
-
-
+      setChatSessions(chats);
+    } catch (err) {
+      console.error("Load chat error", err);
+    }
+  };
 
   useEffect(() => {
-
     if (!currentChat) return;
 
     loadMessages();
-
   }, [currentChat]);
 
-  const loadMessages =
-    async () => {
+  const loadMessages = async () => {
+    try {
+      const messages = await getMessages(currentChat);
 
-      try {
+      setChatHistories(prev => ({
+        ...prev,
+        [currentChat]: messages.map(msg => ({
+          role:
+            msg.role === "assistant"
+              ? "bot"
+              : "user",
+          content: msg.content
+        }))
+      }));
+    } catch (err) {
+      console.error("MESSAGE LOAD ERROR", err);
+    }
+  };
 
-        const messages =
-          await getMessages(
-            currentChat
-          );
+  const handleIngest = async () => {
+    if (!url) return;
 
-        setChatHistories(prev => ({
+    try {
+      setLoading(true);
 
-          ...prev,
+      const data = await ingestWebsite(
+        url,
+        user.id
+      );
 
-          [currentChat]:
-            messages.map(msg => ({
-              role:
-                msg.role === "assistant"
-                  ? "bot"
-                  : "user",
+      console.log("INGEST RESPONSE:", data);
 
-              content:
-                msg.content
-            }))
-        }));
-
-      } catch (err) {
-
-        console.error(err);
-      }
-    };
-
-  
-
-  const handleIngest =
-    async () => {
-
-      if (!url) return;
-
-      try {
-
-        setLoading(true);
-
-const data =
-  await ingestWebsite(
-    url,
-    user.id
-  );
-
-console.log(
-  "INGEST RESPONSE",
-  data
-);
-
-if (!data.kb_id) {
-
-  console.error(
-    "KB ID missing"
-  );
-
-  return;
-}
-
-const chat =
-  await createChat(
-    user.id,
-    data.kb_id,
-    data.url
-  );
-
-console.log(
-  "CHAT CREATED",
-  chat
-);
-
-setCurrentKbId(
-  data.kb_id
-);
-
-setCurrentChat(
-  chat.id
-);
-        console.log("CHAT RESPONSE:", chat);
-console.log("CHAT ID:", chat.id);
-
-        setUrl("");
-
-        await loadKnowledgeBases();
-        await loadChatSessions();
-
-      } catch (err) {
-
-        console.error(err);
-
-      } finally {
-
-        setLoading(false);
-      }
-    };
-
-
-
-  const handleAsk =
-     
-    async () => {
-console.log({
-    question,
-    currentKbId,
-    currentChat
-});
-      if (
-        !question ||
-        !currentKbId ||
-        !currentChat
-      )
+      if (!data || !data.kb_id) {
+        console.error("KB ID missing");
+        alert("Ingestion failed");
         return;
+      }
 
-      const userMessage = {
+      const chat = await createChat(
+        user.id,
+        data.kb_id,
+        data.url || url
+      );
 
-        role: "user",
+      console.log("CHAT CREATED:", chat);
 
-        content: question
+      setCurrentKbId(data.kb_id);
+      setCurrentChat(chat.id);
+
+      setChatSessions(prev => [
+        chat,
+        ...prev
+      ]);
+
+      setChatHistories(prev => ({
+        ...prev,
+        [chat.id]: []
+      }));
+
+      setUrl("");
+
+      await loadKnowledgeBases();
+    } catch (err) {
+      console.error("INGEST ERROR", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAsk = async () => {
+    console.log("ASK DEBUG:", {
+      question,
+      currentKbId,
+      currentChat
+    });
+
+    if (
+      !question ||
+      !currentKbId ||
+      !currentChat
+    ) {
+      alert("Please ingest or select a chat first.");
+      return;
+    }
+
+    const userMessage = {
+      role: "user",
+      content: question
+    };
+
+    setChatHistories(prev => ({
+      ...prev,
+      [currentChat]: [
+        ...(prev[currentChat] || []),
+        userMessage
+      ]
+    }));
+
+    const currentQuestion = question;
+    setQuestion("");
+
+    try {
+      const response = await askQuestion(
+        currentQuestion,
+        currentKbId,
+        currentChat
+      );
+
+      console.log("ASK RESPONSE:", response);
+
+      const botMessage = {
+        role: "bot",
+        content: response.answer
       };
 
       setChatHistories(prev => ({
-
         ...prev,
-
         [currentChat]: [
-
           ...(prev[currentChat] || []),
-
-          userMessage
+          botMessage
         ]
       }));
+    } catch (err) {
+      console.error("ASK ERROR", err);
 
-      const currentQuestion =
-        question;
-
-      setQuestion("");
-
-      try {
-
-        const response =
-          await askQuestion(
-            currentQuestion,
-            currentKbId,
-            currentChat
-          );
-          console.log(
-             "ASK RESPONSE:",
-              response
-               );
-
-        const botMessage = {
-
-          role: "bot",
-
-          content:
-            response.answer
-        };
-        console.log("BOT MESSAGE:", botMessage);
-
-        setChatHistories(prev => ({
-
-          ...prev,
-
-          [currentChat]: [
-
-            ...(prev[currentChat] || []),
-
-            botMessage
-          ]
-        }));
-
-      } catch (err) {
-
-        console.error(err);
-
-        setChatHistories(prev => ({
-
-          ...prev,
-
-          [currentChat]: [
-
-            ...(prev[currentChat] || []),
-
-            {
-              role: "bot",
-              content:
-                "Something went wrong."
-            }
-          ]
-        }));
-      }
-    };
-
-
+      setChatHistories(prev => ({
+        ...prev,
+        [currentChat]: [
+          ...(prev[currentChat] || []),
+          {
+            role: "bot",
+            content: "Something went wrong."
+          }
+        ]
+      }));
+    }
+  };
 
   if (!user) {
-
-    return (
-<Login/>
-      
-    );
+    return <Login />;
   }
 
   const messages =
     currentChat
       ? chatHistories[currentChat] || []
       : [];
-console.log("CURRENT CHAT:", currentChat);
-console.log("CHAT HISTORIES:", chatHistories);
-console.log("MESSAGES SENT TO CHATBOX:", messages);
+
   return (
-
     <div className="app">
-
       <Sidebar
-        chatSessions={
-          chatSessions
-        }
-        currentChat={
-          currentChat
-        }
-        setCurrentChat={
-          setCurrentChat
-        }
+        chatSessions={chatSessions}
+        currentChat={currentChat}
+        setCurrentChat={setCurrentChat}
+        setCurrentKbId={setCurrentKbId}
       />
 
       <div className="main">
-
         <div className="header">
-
-          <h1>
-            InsightURL
-          </h1>
+          <h1>InsightURL</h1>
 
           <div>
-
             <span
               style={{
                 marginRight: "15px"
@@ -348,71 +663,47 @@ console.log("MESSAGES SENT TO CHATBOX:", messages);
               {user.email}
             </span>
 
-            <button
-              onClick={logout}
-            >
+            <button onClick={logout}>
               Logout
             </button>
-
           </div>
-
         </div>
 
         <div className="ingest">
-
           <input
             value={url}
             onChange={(e) =>
-              setUrl(
-                e.target.value
-              )
+              setUrl(e.target.value)
             }
             placeholder="Enter Website URL"
           />
 
           <button
-            onClick={
-              handleIngest
-            }
+            onClick={handleIngest}
             disabled={loading}
           >
-            {
-              loading
-                ? "Ingesting..."
-                : "Ingest"
-            }
+            {loading
+              ? "Ingesting..."
+              : "Ingest"}
           </button>
-
         </div>
 
-        <ChatBox
-          messages={messages}
-        />
+        <ChatBox messages={messages} />
 
         <div className="chat-input">
-
           <input
             value={question}
             onChange={(e) =>
-              setQuestion(
-                e.target.value
-              )
+              setQuestion(e.target.value)
             }
             placeholder="Ask a question..."
           />
 
-          <button
-            onClick={
-              handleAsk
-            }
-          >
+          <button onClick={handleAsk}>
             Send
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 }

@@ -1,22 +1,10 @@
-
-
-
 from dotenv import load_dotenv
 import os
 
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
+from rag.supabase_vector import search_chunks
 
 load_dotenv()
-
-# ==========================================
-# Embeddings
-# ==========================================
-
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
 
 # ==========================================
 # LLM
@@ -28,22 +16,6 @@ llm = ChatGroq(
     temperature=0
 )
 
-# ==========================================
-# Retriever
-# ==========================================
-
-def get_retriever(kb_id):
-
-    db_path = f"backend/chroma_db_{kb_id}"
-
-    db = Chroma(
-        persist_directory=db_path,
-        embedding_function=embeddings
-    )
-
-    return db.as_retriever(
-        search_kwargs={"k": 8}
-    )
 
 # ==========================================
 # Chat Function
@@ -52,10 +24,11 @@ def get_retriever(kb_id):
 def ask_question(question, kb_id):
 
     try:
-
-        retriever = get_retriever(kb_id)
-
-        docs = retriever.invoke(question)
+        docs = search_chunks(
+            question=question,
+            kb_id=kb_id,
+            k=8
+        )
 
         print("=" * 60)
         print("KB ID:", kb_id)
@@ -64,7 +37,6 @@ def ask_question(question, kb_id):
         print("=" * 60)
 
         if len(docs) == 0:
-
             return {
                 "answer": """
 # ❌ No Information Found
@@ -80,7 +52,7 @@ Try:
             }
 
         context = "\n\n".join(
-            [doc.page_content for doc in docs]
+            [doc["content"] for doc in docs]
         )
 
         prompt = f"""
@@ -114,10 +86,7 @@ User Question:
             "sources": list(
                 set(
                     [
-                        doc.metadata.get(
-                            "source",
-                            "Unknown Source"
-                        )
+                        doc.get("url", "Unknown Source")
                         for doc in docs
                     ]
                 )
