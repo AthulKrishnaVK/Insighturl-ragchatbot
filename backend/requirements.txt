@@ -1,13 +1,15 @@
-beautifulsoup4
-requests
-langchain
-langchain-community
-langchain-openai
-chromadb
- langchain-text-splitters
-python-dotenv
 fastapi
 uvicorn
-tiktoken
-fastapi
-jinja2
+
+python-dotenv
+requests
+beautifulsoup4
+
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters
+langchain-groq
+
+sentence-transformers
+supabase
