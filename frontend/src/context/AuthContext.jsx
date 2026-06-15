@@ -50,7 +50,7 @@ export function AuthProvider(
       .signInWithOAuth({
         provider: "google",
         options: {
-        redirectTo: "http://localhost:5173"
+        redirectTo: "https://insighturl-ragchatbot.vercel.app/"
       }});
   };
 

@@ -246,3 +246,28 @@ button:hover {
     max-width: 90%;
   }
 }
+.new-chat-button {
+  width: 100%;
+  padding: 14px;
+  margin: 18px 0;
+  border: none;
+  border-radius: 16px;
+  background: #f5a400;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.new-chat-button:hover {
+  background: #ffb91f;
+}
+
+.empty-chat-text {
+  color: #94a3b8;
+  margin-top: 20px;
+}
+
+.kb-item.active {
+  border: 2px solid #f5a400;
+}

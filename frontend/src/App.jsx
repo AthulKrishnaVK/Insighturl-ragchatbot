@@ -102,16 +102,22 @@ function App() {
       );
 
       console.log("INGEST RESPONSE:", data);
+   const kbId = data.kb_id || data.id;
 
-      if (!data || !data.kb_id) {
-        console.error("KB ID missing");
-        alert("Ingestion failed");
-        return;
-      }
+if (!data.success || !kbId) {
+  console.error("INGEST FAILED:", data);
+  alert(data.error || "Ingest failed");
+  return;
+}
+      // if (!data || !data.kb_id) {
+      //   console.error("KB ID missing",data);
+      //   alert("Ingestion failed");
+      //   return;
+      // }
 
       const chat = await createChat(
         user.id,
-        data.kb_id,
+        kbId,
         data.url || url
       );
 
@@ -212,7 +218,12 @@ function App() {
   if (!user) {
     return <Login />;
   }
-
+const handleNewChat = () => {
+  setCurrentChat(null);
+  setCurrentKbId(null);
+  setQuestion("");
+  setUrl("");
+};
   const messages =
     currentChat
       ? chatHistories[currentChat] || []
@@ -225,6 +236,8 @@ function App() {
         currentChat={currentChat}
         setCurrentChat={setCurrentChat}
         setCurrentKbId={setCurrentKbId}
+          onNewChat={handleNewChat}
+
       />
 
       <div className="main">
@@ -245,8 +258,25 @@ function App() {
             </button>
           </div>
         </div>
+    {!currentChat && (
+  <div className="ingest">
+    <input
+      value={url}
+      onChange={(e) =>
+        setUrl(e.target.value)
+      }
+      placeholder="Enter Website URL"
+    />
 
-        <div className="ingest">
+    <button
+      onClick={handleIngest}
+      disabled={loading}
+    >
+      {loading ? "Ingesting..." : "Ingest"}
+    </button>
+  </div>
+)}
+        {/* <div className="ingest">
           <input
             value={url}
             onChange={(e) =>
@@ -263,7 +293,7 @@ function App() {
               ? "Ingesting..."
               : "Ingest"}
           </button>
-        </div>
+        </div> */}
 
         <ChatBox messages={messages} />
 
@@ -276,7 +306,8 @@ function App() {
             placeholder="Ask a question..."
           />
 
-          <button onClick={handleAsk}>
+          <button onClick={handleAsk}
+          disabled={!currentChat}>
             Send
           </button>
         </div>

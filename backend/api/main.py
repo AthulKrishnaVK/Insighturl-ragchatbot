@@ -199,14 +199,23 @@ def ingest(data: URLRequest):
 
         return response
 
-    except Exception as e:
-        print("INGEST ERROR:", e)
+    # except Exception as e:
+    #     print("INGEST ERROR:", e)
 
-        return {
-            "success": False,
-            "cached": False,
-            "error": str(e)
-        }
+    #     return {
+    #         "success": False,
+    #         "cached": False,
+    #         "error": str(e)
+    #     }
+    except Exception as e:
+         print("INGEST ERROR:", e)
+
+         return {
+        "success": False,
+        "cached": False,
+        "kb_id": None,
+        "error": str(e)
+    }
 
 @app.post("/ask")
 def chat(data: ChatRequest):
