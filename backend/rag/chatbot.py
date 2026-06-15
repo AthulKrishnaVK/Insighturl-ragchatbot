@@ -3,12 +3,10 @@ import os
 
 from langchain_groq import ChatGroq
 from rag.supabase_vector import search_chunks
-
+import time
 load_dotenv()
 
-# ==========================================
-# LLM
-# ==========================================
+
 
 llm = ChatGroq(
     groq_api_key=os.getenv("GROQ_API_KEY"),
@@ -17,9 +15,6 @@ llm = ChatGroq(
 )
 
 
-# ==========================================
-# Chat Function
-# ==========================================
 
 def ask_question(question, kb_id):
 

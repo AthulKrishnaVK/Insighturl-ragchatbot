@@ -12,7 +12,7 @@ def fetch_page(url):
 
         response = requests.get(
             url,
-            timeout=10,
+            timeout=5,
             headers={
                 "User-Agent":
                 "Mozilla/5.0"

@@ -48,8 +48,10 @@ export function AuthProvider(
 
     await supabase.auth
       .signInWithOAuth({
-        provider: "google"
-      });
+        provider: "google",
+        options: {
+        redirectTo: "http://localhost:5173"
+      }});
   };
 
   const logout = async () => {

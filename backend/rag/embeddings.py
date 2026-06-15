@@ -48,7 +48,7 @@ def create_vector_db(kb_id):
         )
 
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,
+        chunk_size=2000,
         chunk_overlap=100
     )
 
