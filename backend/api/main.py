@@ -22,7 +22,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-         "https://insighturl-ragchatbot.vercel.app"
+         "https://insighturl-ragchatbot.vercel.app",
+         "https://athul93-insighturl-backend.hf.space"
     ],
     allow_credentials=True,
     allow_methods=["*"],
