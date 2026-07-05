@@ -301,44 +301,25 @@ def get_knowledge_bases(user_id: str):
 
     return result.data
 
-
-@app.delete("/knowledge-base/{kb_id}")
-def delete_kb(kb_id: str):
-
+@app.delete("/chat-session/{chat_id}")
+def delete_chat(chat_id: str):
     try:
-        if kb_id in knowledge_bases:
-            del knowledge_bases[kb_id]
+        supabase.table("messages").delete().eq(
+            "chat_id", chat_id
+        ).execute()
 
-            with open(
-                CHAT_SESSION_FILE,
-                "w",
-                encoding="utf-8"
-            ) as f:
-                json.dump(
-                    knowledge_bases,
-                    f,
-                    indent=4
-                )
+        supabase.table("chat_sessions").delete().eq(
+            "id", chat_id
+        ).execute()
 
-        (
-            supabase
-            .table("knowledge_bases")
-            .delete()
-            .eq("kb_id", kb_id)
-            .execute()
-        )
-
-        return {
-            "success": True
-        }
+        return {"success": True}
 
     except Exception as e:
+        print("DELETE CHAT ERROR:", e)
         return {
             "success": False,
             "error": str(e)
         }
-
-
 @app.post("/create-chat")
 def create_chat(data: CreateChatRequest):
 
