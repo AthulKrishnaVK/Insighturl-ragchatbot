@@ -3,7 +3,7 @@
   "name": "InsightURL Assistant",
   "version": "1.0.0",
   "description": "Ask questions about the current webpage using InsightURL RAG chatbot.",
-  "permissions": ["tabs", "activeTab"],
+  "permissions": ["tabs", "activeTab","storage"],
   "host_permissions": [
     "http://127.0.0.1:8000/*",
     "https://athul93-insighturl-backend.hf.space/*"

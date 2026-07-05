@@ -107,3 +107,10 @@ export const createChat = async (
 
     return response.data;
 };
+export const deleteChat = async (chatId) => {
+  const response = await API.delete(
+    `/chat-session/${chatId}`
+  );
+
+  return response.data;
+};

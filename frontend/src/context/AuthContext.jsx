@@ -51,6 +51,7 @@ export function AuthProvider(
         provider: "google",
         options: {
         redirectTo: "https://insighturl-ragchatbot.vercel.app/"
+            // redirectTo: "http://localhost:5173"
       }});
   };
 

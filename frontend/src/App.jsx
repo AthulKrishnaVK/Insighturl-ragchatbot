@@ -232,12 +232,17 @@ const handleNewChat = () => {
   return (
     <div className="app">
       <Sidebar
-        chatSessions={chatSessions}
-        currentChat={currentChat}
-        setCurrentChat={setCurrentChat}
-        setCurrentKbId={setCurrentKbId}
-          onNewChat={handleNewChat}
-
+        // chatSessions={chatSessions}
+        // currentChat={currentChat}
+        // setCurrentChat={setCurrentChat}
+        // setCurrentKbId={setCurrentKbId}
+        //   onNewChat={handleNewChat}
+  chatSessions={chatSessions}
+  currentChat={currentChat}
+  setCurrentChat={setCurrentChat}
+  setCurrentKbId={setCurrentKbId}
+  onNewChat={handleNewChat}
+  loadChatSessions={loadChatSessions}
       />
 
       <div className="main">

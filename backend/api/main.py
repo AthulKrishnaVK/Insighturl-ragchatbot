@@ -389,6 +389,40 @@ def get_messages(chat_id: str):
     return result.data
 
 
+
+@app.delete("/chat-session/{chat_id}")
+def delete_chat(chat_id: str):
+
+    try:
+        (
+            supabase
+            .table("messages")
+            .delete()
+            .eq("chat_id", chat_id)
+            .execute()
+        )
+
+        (
+            supabase
+            .table("chat_sessions")
+            .delete()
+            .eq("id", chat_id)
+            .execute()
+        )
+
+        return {
+            "success": True
+        }
+
+    except Exception as e:
+        print("DELETE CHAT ERROR:", e)
+
+        return {
+            "success": False,
+            "error": str(e)
+        }
+
+
 @app.get("/")
 def root():
 
